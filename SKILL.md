@@ -17,7 +17,23 @@ description: 通用 PPT 制作 / 改版 skill。做一套演示文稿、按参�
 pip install -e .
 pptx-native sample demo.pptx     # 先看 12 页通用版式
 pptx-native themes               # 看主题预设
+pptx-native lint demo.pptx --slide 1   # 页面体检
 ```
+
+> 装了 DSH 插件（`dsh-plugin/`）时，以上命令对应 `pptx` 工具的
+> `sample` / `themes` / `lint` / `probe` / `render`，无需 pip 安装。
+
+## 准备（首次使用）
+
+```bash
+git clone https://github.com/haha76haa-debug/Mr.ppt.git
+cd Mr.ppt && pip install -e .
+```
+
+* `pip` 不可用时：`PYTHONPATH=<repo>/src python -m pptx_native ...`
+* 真机验收（`export` / 插件 `render`）需要 Windows + Microsoft PowerPoint。
+* 装成用户级技能：把本文件与 `docs/` 放进 `~/.agents/skills/pptx-native/`
+  （或项目里的 `.dsh/skills/`），模型会在 PPT 任务上自动加载。
 
 ---
 
@@ -29,7 +45,7 @@ pptx-native themes               # 看主题预设
 | 按截图复刻一页 | `probe` + 量测 + `build_*.py` | 坐标、字体、渲染差异 |
 | 改既有 deck 的配色/字体 | `colors` / `sweep` / XML | 主题色藏在描边、阴影、渐变里 |
 | 给照片加注释 / 图片墙 | `layouts.image_grid` / `groups` | 组合变换、3D 透视 |
-| 「帮我检查一下」 | `probe` / `diff` / `overlaps` / `export` | 只看预览会漏 |
+| 「帮我检查一下」 | `lint` / `probe` / `diff` / `overlaps` / `export` | 只看预览会漏 |
 
 ---
 
@@ -166,10 +182,14 @@ pptx-native diff before.pptx after.pptx --slide 3              # 结构 diff
 ## 8. 校验（交付前必跑）
 
 ```bash
+pptx-native lint deck.pptx --slide 3            # 越界 / 溢出风险 / 重叠 / 字号
 pptx-native export deck.pptx p3.png --slide 3   # PowerPoint 真机渲染（唯一验收依据）
 pptx-native overlaps deck.pptx --slide 3        # 文字/形状重叠自检
 pptx-native diff a.pptx b.pptx --slide 3        # 改版前后结构 diff
 ```
+
+`lint` 是启发式体检（会给出 warning），用来在建完就发现问题；
+它不替代真机导出——文字是否真的被裁掉，只有 PowerPoint 说了算。
 
 三层：
 
@@ -225,3 +245,4 @@ pptx-native diff a.pptx b.pptx --slide 3        # 改版前后结构 diff
 * [docs/verification.md](docs/verification.md) —— 三层校验与交付清单
 * [docs/image-prep.md](docs/image-prep.md) —— 图片素材处理
 * [docs/anti-patterns.md](docs/anti-patterns.md) —— 常见坏设计对照表
+* [docs/dsh-plugin.md](docs/dsh-plugin.md) —— DeepSeek Harness 插件（`pptx` 工具）

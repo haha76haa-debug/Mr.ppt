@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "PPT Studio",
+    "description": "Builds editable PowerPoint slides with the bundled pptx-native toolkit. Adds one model tool named pptx: sample writes a 12-slide demo deck, probe lists every shape on a slide with absolute coordinates, lint audits a slide for off-canvas or overflowing text, overlapping boxes and too-small fonts, render exports a slide as PNG through PowerPoint, themes lists the bundled theme presets. Output paths are returned as text, and rendered PNGs can be opened with the image-reading tool. Writes only to the paths the caller passes; render needs Windows with Microsoft PowerPoint."
+  }
+}

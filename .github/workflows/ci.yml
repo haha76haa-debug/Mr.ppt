@@ -42,7 +42,14 @@ jobs:
         run: |
           mkdir -p build
           python -m pptx_native sample build/sample.pptx
+          python -m pptx_native lint build/sample.pptx --slide 1
           python -c "from pptx import Presentation; p=Presentation('build/sample.pptx'); print('slides:', len(p.slides)); print('shapes on p1:', len(p.slides[0].shapes))"
+
+      - name: Build DSH plugin bundle (smoke test)
+        run: |
+          python scripts/build_plugin.py --out build/pptx-studio-bundle
+          node --check build/pptx-studio-bundle/index.js
+          python -c "import json, pathlib; m=json.loads(pathlib.Path('build/pptx-studio-bundle/package.json').read_text()); assert m['name']=='@local/pptx-studio'; print('plugin bundle:', m['name'], m['version'])"
 
       - name: Build every theme (smoke test)
         run: |

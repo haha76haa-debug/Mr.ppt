@@ -91,6 +91,7 @@ prs.save("review.pptx")
 | `sample` | generate a 12-slide sample deck (`--theme blue/dark/minimal/warm`) |
 | `themes` | list theme presets |
 | `probe` | dump every shape on a slide (groups flattened, absolute coordinates) |
+| `lint` | audit a slide: off-canvas, text overflow risk, overlaps, too-small fonts |
 | `preview` | keep selected slides into a small deck (render fast, open big decks) |
 | `export` | export a slide as PNG through PowerPoint COM (Windows + Office) |
 | `colors` | colour census: which colours, in which context |
@@ -116,6 +117,20 @@ The hard parts are not the API calls:
 This repo packages the fixes for those traps as functions, plus a design system so
 slides don't drift apart, plus a verification loop that ends in PowerPoint.
 
+## DeepSeek Harness plugin (optional)
+
+`dsh-plugin/` turns the toolkit into one model tool inside
+[DeepSeek Harness](https://github.com/deepseek-ai/deepseek-harness):
+
+```bash
+python scripts/build_plugin.py          # → build/pptx-studio-bundle/
+```
+
+Then **Plugins → Add plugin** and pick `build/pptx-studio-bundle`. The tool is
+`pptx` with `sample` / `probe` / `lint` / `render` / `themes` actions; it vendors
+the Python package, so no `pip install` is needed for the plugin itself. See
+[docs/dsh-plugin.md](docs/dsh-plugin.md) and [dsh-plugin/README.md](dsh-plugin/README.md).
+
 ## Project layout
 
 ```
@@ -133,7 +148,8 @@ src/pptx_native/
 ├── sample.py      neutral 12-slide sample deck
 └── cli.py         command line
 tests/             pytest suite (no Office required)
-scripts/           selfcheck, PowerPoint export helper
+scripts/           selfcheck, PowerPoint export helper, plugin bundler
+dsh-plugin/        DeepSeek Harness Host plugin source (build with scripts/build_plugin.py)
 docs/              design system, layouts, workflow, verification, ...
 SKILL.md           the workflow as an agent skill
 ```
@@ -148,6 +164,7 @@ SKILL.md           the workflow as an agent skill
 - [docs/verification.md](docs/verification.md) — three-layer verification
 - [docs/image-prep.md](docs/image-prep.md) — image handling
 - [docs/anti-patterns.md](docs/anti-patterns.md) — bad design → good design
+- [docs/dsh-plugin.md](docs/dsh-plugin.md) — DeepSeek Harness plugin bundle
 
 ## Tests
 

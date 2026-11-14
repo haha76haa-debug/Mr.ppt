@@ -1,10 +1,10 @@
-[build-system]
+﻿[build-system]
 requires = ["setuptools>=68", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "pptx-native"
-version = "0.2.0"
+version = "0.2.1"
 description = "Design system, layout library and verification toolkit for building editable PowerPoint decks"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -43,3 +43,4 @@ addopts = "-q"
 
 [tool.coverage.run]
 source = ["pptx_native"]
+

@@ -3,7 +3,26 @@
 所有重要改动记录在这里。格式参考 [Keep a Changelog](https://keepachangelog.com/)，
 版本号遵循 [SemVer](https://semver.org/lang/zh-CN/)。
 
+## [0.2.1] - 2026-11-14
+
+新增页面体检、DSH 插件 bundle 与构建脚本。
+
+### Added
+
+- `checks.audit_slide()`：交付前体检——越界、文字溢出风险（启发式估算）、文字框重叠、字号过小。
+- CLI `lint` 子命令：`pptx-native lint deck.pptx --slide 3 [--json] [--fail-on error]`。
+- `dsh-plugin/`：DeepSeek Harness Host 插件源码，注册 `pptx` 工具（sample / probe / lint / render / themes），
+  把 pptx-native 工具链变成一次调用。
+- `scripts/build_plugin.py`：把 `src/pptx_native/` 与导出脚本组装成可安装 bundle，Python 包不重复提交。
+- 文档 `docs/dsh-plugin.md`；测试 `test_audit.py`、`test_plugin_bundle.py`（共 48 条）。
+- CI 增加插件 bundle 构建与 `node --check`、`lint` 冒烟。
+
+### Changed
+
+- `checks.py` 顶部导入 `theme` 的画布常量，体检与版式共用同一坐标系。
+
 ## [0.2.0] - 2026-11-14
+
 
 首个公开版本：从「单页复刻工具」泛化为「通用 PPT 设计系统 + 版式库 + 校验工具链」。
 

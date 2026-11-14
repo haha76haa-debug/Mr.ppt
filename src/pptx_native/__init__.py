@@ -1,9 +1,7 @@
-# -*- coding: utf-8 -*-
-"""pptx-native：把 PPT 做成「可编辑原生形状」，并用 PowerPoint 真机校验。
-
-公开 API 都从子模块导出，方便脚本里直接 import。
-"""
-__version__ = "0.2.0"
+﻿# -*- coding: utf-8 -*-
+"""pptx-native锛氭妸 PPT 鍋氭垚銆屽彲缂栬緫鍘熺敓褰㈢姸銆嶏紝骞剁敤 PowerPoint 鐪熸満鏍￠獙銆?
+鍏紑 API 閮戒粠瀛愭ā鍧楀鍑猴紝鏂逛究鑴氭湰閲岀洿鎺?import銆?"""
+__version__ = "0.2.1"
 
 from . import (checks, colors, geometry, groups, images, layouts, probe,  # noqa: F401
                render, sample, styling, theme)
@@ -21,3 +19,4 @@ __all__ = [
     "Theme", "TYPE_SCALE", "SLIDE_W", "SLIDE_H",
     "__version__",
 ]
+

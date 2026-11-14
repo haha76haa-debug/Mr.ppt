@@ -9,6 +9,7 @@
     borders   修照片文件自带的细边框
     diff      两版单页结构 diff
     overlaps  形状重叠自检
+    lint      页面体检（越界 / 文字溢出风险 / 重叠 / 字号过小）
     sample    生成示例 deck（不依赖外部素材）
     themes    列出可用的主题预设
 """
@@ -136,6 +137,22 @@ def cmd_overlaps(args):
               % (area, a[0], a[1], a[3], b[0], b[1], b[3]))
 
 
+def cmd_lint(args):
+    prs = Presentation(args.deck)
+    issues = checks.audit_slide(_slide(prs, args.slide))
+    if args.json:
+        print(json.dumps(issues, ensure_ascii=False, indent=1))
+    else:
+        for line in checks.format_issues(issues):
+            print(line)
+        errors = sum(1 for item in issues if item["level"] == "error")
+        print("\n%d issue(s): %d error, %d warning"
+              % (len(issues), errors, len(issues) - errors))
+    if args.fail_on == "error" and any(item["level"] == "error" for item in issues):
+        return 1
+    return 0
+
+
 def cmd_sample(args):
     from .sample import THEMES, build_sample
     if args.theme not in THEMES:
@@ -211,6 +228,13 @@ def build_parser():
     s.add_argument("--slide", type=int, required=True)
     s.add_argument("--min-area", type=float, default=0.02)
     s.set_defaults(func=cmd_overlaps)
+
+    s = sub.add_parser("lint", help="页面体检（越界 / 溢出 / 重叠 / 字号）")
+    s.add_argument("deck")
+    s.add_argument("--slide", type=int, required=True)
+    s.add_argument("--json", action="store_true")
+    s.add_argument("--fail-on", choices=["none", "error"], default="none")
+    s.set_defaults(func=cmd_lint)
 
     s = sub.add_parser("sample", help="生成示例 deck")
     s.add_argument("out", nargs="?", default="sample.pptx")

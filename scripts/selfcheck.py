@@ -223,6 +223,23 @@ def _():
     assert not only_a and not only_b and not geom and text
 
 
+@check("checks.audit_slide 体检越界 / 重叠 / 字号")
+def _():
+    from pptx_native.theme import SLIDE_W
+    prs = Presentation()
+    prs.slide_width, prs.slide_height = Inches(13.333), Inches(7.5)
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    for x, y, size in ((SLIDE_W - 0.4, 1.0, 8.0), (2.0, 2.0, 16.0), (2.2, 2.2, 16.0)):
+        box = slide.shapes.add_textbox(Inches(x), Inches(y), Inches(2), Inches(0.5))
+        run = box.text_frame.paragraphs[0].add_run()
+        run.text = "体检文字内容"
+        run.font.size = Pt(size)
+        run.font.name = "Microsoft YaHei"
+    issues = checks.audit_slide(slide)
+    kinds = {item["kind"] for item in issues}
+    assert "canvas" in kinds and "overlap" in kinds and "font" in kinds, kinds
+
+
 @check("probe 导出结构")
 def _():
     d = workdir()

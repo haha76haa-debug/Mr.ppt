@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "PPT Studio",
+    "description": "用内置 pptx-native 工具链制作可编辑的 PowerPoint 页面，注册一个名为 pptx 的模型工具：sample 生成 12 页示例 deck，probe 列出某页全部形状与绝对坐标，lint 体检某页的越界/文字溢出/重叠/字号过小，render 用 PowerPoint 真机导出某页 PNG，themes 列出主题预设。输出路径以文本返回，PNG 可用读图工具查看；只写入调用方传入的路径；render 需要 Windows + Microsoft PowerPoint。"
+  }
+}

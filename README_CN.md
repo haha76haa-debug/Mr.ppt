@@ -89,6 +89,7 @@ prs.save("review.pptx")
 | `sample` | 生成 12 页示例 deck（`--theme blue/dark/minimal/warm`） |
 | `themes` | 列出主题预设 |
 | `probe` | 导出某页全部形状（组合展开、绝对坐标） |
+| `lint` | 页面体检：越界 / 文字溢出风险 / 文本框重叠 / 字号过小 |
 | `preview` | 只保留指定页，输出小 deck（渲染快、大文件也能打开） |
 | `export` | 用 PowerPoint COM 真机导出某页 PNG（Windows + Office） |
 | `colors` | 颜色普查：有哪些颜色、分别出现在什么上下文 |
@@ -113,6 +114,19 @@ python-pptx 的 API 本身不难，难的是「看起来对 + 仍然可编辑」
 本仓库把这些修复封装成函数，再加一套设计系统防止页面跑偏，最后用
 「PowerPoint 真机导出」收尾，形成闭环。
 
+## DeepSeek Harness 插件（可选）
+
+`dsh-plugin/` 把工具链变成一个 DSH 模型工具：
+
+```bash
+python scripts/build_plugin.py          # → build/pptx-studio-bundle/
+```
+
+然后在 **Plugins → Add plugin** 选择 `build/pptx-studio-bundle`。工具名 `pptx`，
+action 为 `sample` / `probe` / `lint` / `render` / `themes`；插件自带 Python 包，
+不需要额外 `pip install`。详见 [docs/dsh-plugin.md](docs/dsh-plugin.md) 与
+[dsh-plugin/README.md](dsh-plugin/README.md)。
+
 ## 项目结构
 
 ```
@@ -130,7 +144,8 @@ src/pptx_native/
 ├── sample.py      中性 12 页示例 deck
 └── cli.py         命令行
 tests/             pytest 测试（无需 Office）
-scripts/           selfcheck、PowerPoint 导出脚本
+scripts/           selfcheck、PowerPoint 导出脚本、插件构建
+dsh-plugin/        DeepSeek Harness Host 插件源码（用 scripts/build_plugin.py 构建）
 docs/              设计系统、版式、工作流、校验、反模式……
 SKILL.md           把整套流程写成 agent skill
 ```
@@ -145,6 +160,7 @@ SKILL.md           把整套流程写成 agent skill
 - [docs/verification.md](docs/verification.md) —— 三层校验与交付清单
 - [docs/image-prep.md](docs/image-prep.md) —— 图片素材处理
 - [docs/anti-patterns.md](docs/anti-patterns.md) —— 坏设计 → 好设计对照
+- [docs/dsh-plugin.md](docs/dsh-plugin.md) —— DeepSeek Harness 插件 bundle
 
 ## 测试
 

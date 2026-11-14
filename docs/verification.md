@@ -34,10 +34,23 @@ powershell -NoProfile -ExecutionPolicy Bypass -File scripts/export_slide.ps1 `
 ## 3. 结构自检
 
 ```bash
+pptx-native lint deck.pptx --slide 8          # 页面体检（越界/溢出/重叠/字号）
 pptx-native overlaps deck.pptx --slide 8      # 重叠对（面积、双方 id/名称）
 pptx-native diff before.pptx after.pptx --slide 8
 pptx-native probe deck.pptx --slide 8         # 形状清单（含绝对坐标）
 ```
+
+`lint` 返回四类问题：
+
+| kind | 含义 | 级别 |
+|---|---|---|
+| `canvas` | 元素超出画布 | 文字 = error，装饰/图片 = warn |
+| `overflow` | 文字可能撑破文本框（按字符宽度 + 字号估算） | warn |
+| `overlap` | 两个文字框互相重叠 | warn |
+| `font` | 显式字号小于 9pt | warn |
+
+它是启发式检查，用来在构建后立刻发现问题；**不能替代真机渲染**——
+文字是不是真的被裁掉、字体有没有被替换，只有 PowerPoint 说了算。
 
 期望：
 

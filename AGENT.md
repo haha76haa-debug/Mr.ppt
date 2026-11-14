@@ -26,6 +26,8 @@
 pytest -q                     # CI 用的标准测试
 python scripts/selfcheck.py   # 没有 pytest 时的纯 assert 版
 python -m pptx_native sample build/sample.pptx
+python -m pptx_native lint build/sample.pptx --slide 1
+python scripts/build_plugin.py  # DSH 插件 bundle 能构建
 ```
 
 涉及渲染 / 版式的改动，在 Windows 上再做一次真机检查：
@@ -40,6 +42,8 @@ python -m pptx_native export build/sample.pptx build/p1.png --slide 1
 
 - [ ] `pytest -q` 全绿（或 selfcheck 全 PASS）
 - [ ] `pptx-native sample` 能生成且能重新打开
+- [ ] `pptx-native lint` 在示例页上无 error
+- [ ] 改了 `dsh-plugin/` 或 `src/` 后 `python scripts/build_plugin.py` 能通过
 - [ ] 新增/修改的版式有测试
 - [ ] README / SKILL / docs 的命令与实际 CLI 一致
 - [ ] `CHANGELOG.md` 有对应条目
