@@ -1,0 +1,43 @@
+name: 🐞 Bug report
+description: 报告一个可复现的问题（几何偏移 / 颜色没清掉 / 真机与预览不一致等）
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈！请尽量提供一个**最小可复现**的 deck（脱敏即可）。
+        如果是「预览对、PowerPoint 不对」，请附上 `pptx-native export` 导出的 PNG。
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 发生了什么
+      description: 现象 + 期望结果
+      placeholder: 注释条在 PowerPoint 里偏了 0.13in，LibreOffice 里是贴合的……
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: 复现步骤
+      placeholder: |
+        1. pptx-native probe deck.pptx --slide 3
+        2. python build.py
+        3. pptx-native export out.pptx p3.png --slide 3
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: 版本 / 环境
+      placeholder: pptx-native 0.2.0, Windows 11, PowerPoint 2021, Python 3.12
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: 相关输出
+      description: CLI 输出、报错栈、`probe` 片段
+      render: shell

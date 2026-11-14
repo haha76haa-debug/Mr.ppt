@@ -1,0 +1,28 @@
+name: 💡 Feature request
+description: 提议一个新能力（新版式、新命令、新校验、新的 OOXML 封装等）
+title: "[feat] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: scenario
+    attributes:
+      label: 使用场景
+      description: 你在做什么 PPT 任务，卡在哪一步
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: 期望的形态
+      description: 命令行 / API 大概长什么样
+      placeholder: |
+        pptx-native move --deck a.pptx --slide 3 --bars "Rectangle" --into-nearest-photo
+        from pptx_native.groups import move_into_group
+        layouts.grid(prs, theme, items=[(span, content), ...])
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: 你现在的替代做法
+      description: 目前是怎么绕过去的（有助于判断优先级）

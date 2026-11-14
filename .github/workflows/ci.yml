@@ -1,0 +1,62 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Python 3.9 的预编译包在 ubuntu-24.04 上不稳定，固定用 22.04
+          - { os: ubuntu-22.04, python-version: "3.9" }
+          - { os: ubuntu-latest, python-version: "3.10" }
+          - { os: ubuntu-latest, python-version: "3.11" }
+          - { os: ubuntu-latest, python-version: "3.12" }
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install package
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Show version
+        run: python -c "import pptx_native, sys; print('pptx-native', pptx_native.__version__, 'on', sys.version)"
+
+      - name: Run tests
+        run: pytest -q
+
+      - name: Build sample deck (smoke test)
+        run: |
+          mkdir -p build
+          python -m pptx_native sample build/sample.pptx
+          python -c "from pptx import Presentation; p=Presentation('build/sample.pptx'); print('slides:', len(p.slides)); print('shapes on p1:', len(p.slides[0].shapes))"
+
+      - name: Build every theme (smoke test)
+        run: |
+          for t in blue dark minimal warm; do python -m pptx_native sample "build/sample-$t.pptx" --theme "$t"; done
+          python -c "from pptx import Presentation; import glob; [print(f, len(Presentation(f).slides)) for f in sorted(glob.glob('build/sample-*.pptx'))]"
+
+      - name: CLI smoke test
+        run: |
+          mkdir -p build
+          python -m pptx_native themes
+          python -m pptx_native probe build/sample.pptx --slide 1 --text-only > build/probe.txt
+          head -n 10 build/probe.txt
+          python -m pptx_native preview build/sample.pptx build/prev.pptx --keep 1
+          python -m pptx_native overlaps build/sample.pptx --slide 1 > build/overlaps.txt
+          head -n 5 build/overlaps.txt
+          python -m pptx_native diff build/sample.pptx build/sample.pptx --slide 1
+          python -m pptx_native colors build/sample.pptx --slide 1

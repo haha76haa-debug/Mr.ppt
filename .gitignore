@@ -1,0 +1,40 @@
+# Byte-compiled / optimized
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+.pytest_env/
+
+# Build output
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Test / coverage
+.coverage
+coverage.xml
+htmlcov/
+
+# Local decks, renders and scratch output (don't commit binary artifacts)
+*.pptx
+*.pdf
+*.png
+/selfcheck_out.txt
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
