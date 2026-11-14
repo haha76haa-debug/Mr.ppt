@@ -82,8 +82,13 @@ LibreOffice / 在线预览不支持：组合 3D、文字描边、部分文字阴
 
 ## 路线
 
+- [x] 生成前的「内容溢出预测」——`checks.audit_slide()` / `lint`（0.2.1）
 - [ ] `layouts.py` 增加 `grid` / `cards` / `gantt` 版式
 - [ ] `Theme` 支持从 PPTX 主题（`theme1.xml`）反读
 - [ ] `probe --json` 输出可直接喂给布局重算（从截图到参数）
 - [ ] 跨平台渲染（LibreOffice → PNG）一键化
-- [ ] 生成前的「内容溢出预测」（估算文字宽度，避免导出后才发现）
+- [ ] DSH 插件：工具结果内联渲染图——需接 `ctx.attachments` 把 PNG 转成 `ImageBlock`，
+      省掉一次 `read_image`；等高频生成/逐页验收时再做
+- [ ] DSH 插件：UI 面板（缩略图墙 / 主题切换）——Client 插件 + slot + React，
+      面向非 agent 使用场景，当前与侧边栏预览、`office_render` 重复，暂不做
+
