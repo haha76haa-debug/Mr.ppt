@@ -1,4 +1,4 @@
-﻿# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """pptx-native锛氭妸 PPT 鍋氭垚銆屽彲缂栬緫鍘熺敓褰㈢姸銆嶏紝骞剁敤 PowerPoint 鐪熸満鏍￠獙銆?
 鍏紑 API 閮戒粠瀛愭ā鍧楀鍑猴紝鏂逛究鑴氭湰閲岀洿鎺?import銆?"""
 __version__ = "0.2.1"
